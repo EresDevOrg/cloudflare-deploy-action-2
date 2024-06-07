@@ -40,11 +40,12 @@ echo "dist below"
 echo "$DIST"
 
 if [[ -z "${STATICS_DIR}" ]]; then
-  echo "cd to dist"
-  cd "$DIST"
-else
+  # STATICS_DIR is empty string "", expected to be an old project
   echo "setting statics dir = dist"
   STATICS_DIR=$DIST
+else
+  echo "cd to dist"
+  cd "$DIST"
 fi
 
 yarn install --ignore-scripts
