@@ -34,14 +34,24 @@ fi
 # cd "$DIST"
 # when all old apps have adopted the recommeneded 
 # folder structure and have specified STATICS_DIR
+echo "statics dir below"
+echo "$STATICS_DIR"
+echo "dist below"
+echo "$DIST"
+
 if [[ -z "${STATICS_DIR}" ]]; then
+  echo "cd to dist"
   cd "$DIST"
 else
+  echo "setting statics dir = dist"
   STATICS_DIR=$DIST
 fi
 
 yarn install --ignore-scripts
 yarn add wrangler --ignore-scripts
+
+echo "statics dir below 2"
+echo "$STATICS_DIR"
 
 output=$(yarn wrangler pages deploy "$STATICS_DIR" --project-name "$REPOSITORY_NAME" --branch "$CURRENT_BRANCH" --commit-dirty=true)
 output="${output//$'\n'/ }"
