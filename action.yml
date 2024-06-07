@@ -31,7 +31,7 @@ inputs:
     required: true
   statics_directory:
     description: "Directory that contains static files. The directory usually contains index.html"
-    required: false # should be changed to required when all old apps have adopted recommended directory strcuture & started to specify statics_dir
+    required: false # if missing, use output_directory as statics_directory
 
 runs:
   using: "composite"

@@ -30,29 +30,16 @@ else
     --data "{\"name\":\"$REPOSITORY_NAME\",\"production_branch\":\"$DEFAULT_BRANCH\",\"build_config\":{\"build_command\":\"\",\"destination_dir\":\"$DIST\"}}"
 fi
 
-# This if/else block can be replaced with just
-# cd "$DIST"
-# when all old apps have adopted the recommeneded 
-# folder structure and have specified STATICS_DIRECTORY
-echo "statics dir below"
-echo "$STATICS_DIRECTORY"
-echo "dist below"
-echo "$DIST"
-
 if [[ -z "${STATICS_DIRECTORY}" ]]; then
-  # STATICS_DIRECTORY is empty string "", expected to be an old project
-  echo "setting statics dir = dist"
+  # if STATICS_DIRECTORY parameter is unspecified then use $DIST as 
+  # STATICS_DIRECTORY treating entire artifact as static-only
   STATICS_DIRECTORY=$DIST
 else
-  echo "cd to dist"
   cd "$DIST"
 fi
 
 yarn install --ignore-scripts
 yarn add wrangler --ignore-scripts
-
-echo "statics dir below 2"
-echo "$STATICS_DIRECTORY"
 
 output=$(yarn wrangler pages deploy "$STATICS_DIRECTORY" --project-name "$REPOSITORY_NAME" --branch "$CURRENT_BRANCH" --commit-dirty=true)
 output="${output//$'\n'/ }"
