@@ -4,7 +4,7 @@ PROJECT=$1
 DEFAULT_BRANCH=$2
 DIST=$3
 CURRENT_BRANCH=$4
-STATICS_DIR=$5
+STATICS_DIRECTORY=$5
 
 IFS='/' read -ra fields <<<"$PROJECT"
 REPOSITORY_NAME="${fields[1]}"
@@ -33,16 +33,16 @@ fi
 # This if/else block can be replaced with just
 # cd "$DIST"
 # when all old apps have adopted the recommeneded 
-# folder structure and have specified STATICS_DIR
+# folder structure and have specified STATICS_DIRECTORY
 echo "statics dir below"
-echo "$STATICS_DIR"
+echo "$STATICS_DIRECTORY"
 echo "dist below"
 echo "$DIST"
 
-if [[ -z "${STATICS_DIR}" ]]; then
-  # STATICS_DIR is empty string "", expected to be an old project
+if [[ -z "${STATICS_DIRECTORY}" ]]; then
+  # STATICS_DIRECTORY is empty string "", expected to be an old project
   echo "setting statics dir = dist"
-  STATICS_DIR=$DIST
+  STATICS_DIRECTORY=$DIST
 else
   echo "cd to dist"
   cd "$DIST"
@@ -52,9 +52,9 @@ yarn install --ignore-scripts
 yarn add wrangler --ignore-scripts
 
 echo "statics dir below 2"
-echo "$STATICS_DIR"
+echo "$STATICS_DIRECTORY"
 
-output=$(yarn wrangler pages deploy "$STATICS_DIR" --project-name "$REPOSITORY_NAME" --branch "$CURRENT_BRANCH" --commit-dirty=true)
+output=$(yarn wrangler pages deploy "$STATICS_DIRECTORY" --project-name "$REPOSITORY_NAME" --branch "$CURRENT_BRANCH" --commit-dirty=true)
 output="${output//$'\n'/ }"
 # Extracting URL from output only
 url=$(echo "$output" | grep -o 'https://[^ ]*' | sed 's/ //g')
